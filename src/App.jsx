@@ -1,10 +1,14 @@
-import React from 'react'
+import Navbar from './common/Navbar'
+import Home from './pages/Home';
+import "./styles/Card.css"
 
 const App = () => {
   return (
-    <div>
-    </div>
-  )
-}
+    <main >
+      <Navbar />
+      <Home />
+    </main>
+  );
+};
 
-export default App
+export default App;
