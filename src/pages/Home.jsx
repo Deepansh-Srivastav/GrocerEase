@@ -107,7 +107,7 @@ const Home = () => {
             flexDirection: { md: "row", sm: "column", xs: "column" },
             justifyContent: "space-evenly",
             alignItems: "center",
-            margin: "50px 0 50px 0"
+            margin: "50px 0 30px 0"
         }}>
             <LeftCard items={pendingItems} handleSelectedItems={handleSelectedItems} selectedPendingItems={selectedPendingItems} />
 
