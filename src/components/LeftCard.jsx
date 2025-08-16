@@ -1,6 +1,7 @@
 import AddItemForm from "./AddItemForm.jsx"
+import { Chip } from "@mui/material";
 
-const LeftCard = ({ items, handleSelectedItems, selectedPendingItems }) => {
+const LeftCard = ({ items, handleSelectedItems, selectedPendingItems, setPendingItems }) => {
   return (
     <section className="toBuyCardContainer">
       <div className="left-card">
@@ -12,13 +13,13 @@ const LeftCard = ({ items, handleSelectedItems, selectedPendingItems }) => {
         </div>
 
         <div className="item-list-container">
+
           {items?.length > 0 ? (
             <ul className="item-list">
               {items.map((item, index) => {
                 const isItemSelected = selectedPendingItems?.some(
                   (selectedItem) => selectedItem?.id === item?.id
                 )
-
                 return (
                   <li
                     key={item?.id || index}
@@ -46,6 +47,22 @@ const LeftCard = ({ items, handleSelectedItems, selectedPendingItems }) => {
                           </svg>
                         </div>
                       )}
+                      <Chip
+                        label={item?.quantity}
+                        sx={{
+                          minWidth: "28px",
+                          height: "24px",
+                          borderRadius: "9999px",
+                          background: "#588352ff",
+                          color: "white",
+                          fontWeight: 600,
+                          fontSize: "0.75rem",
+                          boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
+                          "& .MuiChip-label": {
+                            px: 1.5,
+                          },
+                        }}
+                      />
                     </div>
                   </li>
                 );
@@ -61,7 +78,7 @@ const LeftCard = ({ items, handleSelectedItems, selectedPendingItems }) => {
         </div>
       </div>
 
-      <AddItemForm />
+      <AddItemForm setPendingItems={setPendingItems} />
     </section>
   );
 };
