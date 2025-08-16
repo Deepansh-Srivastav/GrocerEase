@@ -17,6 +17,7 @@ const Home = () => {
     const [pendingItems, setPendingItems] = useState(items);
     const [completedItems, setCompletedItems] = useState([]);
     const [selectedPendingItems, setSelectedPendingItems] = useState([]);
+    const [selectedCompletedItems, setSelectedCompletedItems] = useState([]);
 
     function transferItemsToCompleted() {
 
@@ -31,6 +32,53 @@ const Home = () => {
         setSelectedPendingItems([]);
     }
 
+    function transferItemsToPending() {
+        const selectedItems = [...selectedCompletedItems]
+
+        setPendingItems((prev) => {
+            return [...prev,
+            ...selectedItems
+            ]
+        });
+
+        const updatedCompletedList = completedItems?.filter((item) => {
+            return !(selectedCompletedItems?.some((selectedItem) => {
+                return selectedItem?.id === item?.id
+            }))
+        })
+
+        setCompletedItems([...updatedCompletedList]);
+
+        setSelectedCompletedItems([]);
+
+    };
+
+    function handleCompletedSelectedItems(product) {
+        const isProductPresent = selectedCompletedItems?.some((item) => {
+            return item?.id === product?.id;
+        });
+
+        if (!isProductPresent) {
+            setSelectedCompletedItems((prev) => {
+                return [
+                    ...prev,
+                    product
+                ];
+            });
+        }
+        else {
+            const newArray = selectedCompletedItems?.filter((item) => {
+                return item?.id !== product?.id;
+            });
+            setSelectedCompletedItems(() => {
+                return [
+                    ...newArray
+                ];
+            });
+
+        };
+    };
+
     function handleSelectedItems(product) {
         const isDuplicateItem = selectedPendingItems.some(item => item.id === product.id);
 
@@ -41,7 +89,7 @@ const Home = () => {
         }
     }
 
-    console.log("Completed items are - ", completedItems);
+    console.log(" items are - ", selectedCompletedItems);
 
     return (
         <Box sx={{
@@ -54,8 +102,8 @@ const Home = () => {
             marginTop: "100px"
         }}>
             <LeftCard items={pendingItems} handleSelectedItems={handleSelectedItems} selectedPendingItems={selectedPendingItems} />
-            <Control transferToCompleted={transferItemsToCompleted} selectedPendingItems={selectedPendingItems} />
-            <RightCard items={completedItems} />
+            <Control transferToCompleted={transferItemsToCompleted} selectedPendingItems={selectedPendingItems} selectedCompletedItems={selectedCompletedItems} transferItemsToPending={transferItemsToPending} />
+            <RightCard items={completedItems} selectedCompletedItems={selectedCompletedItems} handleCompletedSelectedItems={handleCompletedSelectedItems} />
 
         </Box>
     );

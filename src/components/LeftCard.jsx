@@ -7,17 +7,20 @@ const LeftCard = ({ items, handleSelectedItems, selectedPendingItems }) => {
       <ul className="item-list">
 
         {items.map((item, index) => {
-          const isItemSelected = selectedPendingItems?.some(
-            (selectedItem) => selectedItem?.id === item?.id
-          );
+          const isItemPresent = selectedPendingItems?.some(
+            (selectedItem) => {
+              return selectedItem?.id === item?.id
+            }
+          )
+
           return (
             <li
               key={index}
               className="item"
-              style={{
-                background: isItemSelected ? "red" : "",
-              }}
               onClick={() => handleSelectedItems(item)}
+              style={{
+                background: isItemPresent ? "red" : "",
+              }}
             >
               {item?.name}
             </li>
