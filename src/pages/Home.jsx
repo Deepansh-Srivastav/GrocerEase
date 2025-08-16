@@ -18,6 +18,20 @@ const Home = () => {
     const [completedItems, setCompletedItems] = useState([]);
     const [selectedItems, setSelectedItems] = useState([]);
 
+    function transferItemsToCompleted() {
+
+        const newCompleted = [...completedItems, ...selectedItems];
+
+        const updatedPending = pendingItems.filter(
+            (item) => newCompleted.every((completed) => completed.id !== item.id)
+        );
+
+        // 3. Update state
+        setCompletedItems(newCompleted);
+        setPendingItems(updatedPending);
+        setSelectedItems([]);
+    }
+
     function handleSelectedItems(product) {
         const isDuplicateItem = selectedItems.some(item => item.id === product.id);
 
@@ -28,8 +42,8 @@ const Home = () => {
         }
     }
 
+    console.log("Completed items are - ", completedItems);
 
-    console.log("The selected value is - ", selectedItems);
 
     return (
         <Box sx={{
@@ -42,8 +56,8 @@ const Home = () => {
             marginTop: "100px"
         }}>
             <LeftCard items={pendingItems} handleSelectedItems={handleSelectedItems} selectedItems={selectedItems} />
-            <Control />
-            <RightCard />
+            <Control transferToCompleted={transferItemsToCompleted} selectedItems={selectedItems} />
+            <RightCard items={completedItems} />
 
         </Box>
     );
