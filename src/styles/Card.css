@@ -1,0 +1,49 @@
+.left-card {
+    width: 500px;
+    min-height: 400px;
+    background: linear-gradient(135deg, #ffffff 0%, #f7faff 100%);
+    border-radius: 22px;
+    padding: 18px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+    font-family: "Segoe UI", sans-serif;
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.card-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 18px;
+    text-align: center;
+    color: #2d3748;
+    letter-spacing: 0.5px;
+}
+
+.item-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.item {
+    background: linear-gradient(135deg, #94bfdb 0%, #a9cee7 100%);
+    margin: 10px 0;
+    padding: 12px 14px;
+    border-radius: 10px;
+    transition: all 0.25s ease-in-out;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 150, 255, 0.08);
+    font-weight: 500;
+    color: #1e3a8a;
+    font-size: 18px;
+}
+
+.item:hover {
+    background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 4px 14px rgba(0, 150, 255, 0.15);
+}
+
+.active{
+    background-color: red;
+}
