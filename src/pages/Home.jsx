@@ -23,9 +23,12 @@ const Home = () => {
 
         const newCompleted = [...completedItems, ...selectedPendingItems];
 
-        const updatedPending = pendingItems.filter(
-            (item) => newCompleted.every((completed) => completed.id !== item.id)
-        );
+        const updatedPending = pendingItems?.filter((pendingItem) => {
+            return !(selectedPendingItems?.some((selectedItem) => {
+                return selectedItem?.id === pendingItem?.id;
+            }))
+        }
+        )
 
         setCompletedItems(newCompleted);
         setPendingItems(updatedPending);
@@ -99,7 +102,7 @@ const Home = () => {
             display: "flex",
             justifyContent: "space-evenly",
             alignItems: "center",
-            marginTop: "100px"
+            margin: "100px 0 100px 0"
         }}>
             <LeftCard items={pendingItems} handleSelectedItems={handleSelectedItems} selectedPendingItems={selectedPendingItems} />
             <Control transferToCompleted={transferItemsToCompleted} selectedPendingItems={selectedPendingItems} selectedCompletedItems={selectedCompletedItems} transferItemsToPending={transferItemsToPending} />
