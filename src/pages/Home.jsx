@@ -1,15 +1,11 @@
 import LeftCard from '../components/LeftCard';
 import RightCard from '../components/RightCard';
 import { Box } from '@mui/material'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Control from '../components/Control';
 
 const items = [
     { id: 1, name: "Milk" },
-    { id: 2, name: "Bread" },
-    { id: 3, name: "Eggs" },
-    { id: 4, name: "Tomatoes" },
-    { id: 5, name: "Onion" },
 ];
 
 const Home = () => {
@@ -23,9 +19,12 @@ const Home = () => {
 
         const newCompleted = [...completedItems, ...selectedPendingItems];
 
-        const updatedPending = pendingItems.filter(
-            (item) => newCompleted.every((completed) => completed.id !== item.id)
-        );
+        const updatedPending = pendingItems?.filter((pendingItem) => {
+            return !(selectedPendingItems?.some((selectedItem) => {
+                return selectedItem?.id === pendingItem?.id;
+            }))
+        }
+        )
 
         setCompletedItems(newCompleted);
         setPendingItems(updatedPending);
@@ -65,6 +64,7 @@ const Home = () => {
                     product
                 ];
             });
+            return;
         }
         else {
             const newArray = selectedCompletedItems?.filter((item) => {
@@ -89,7 +89,14 @@ const Home = () => {
         }
     }
 
-    console.log(" items are - ", selectedCompletedItems);
+    useEffect(() => {
+        if (selectedPendingItems?.length > 0) {
+            transferItemsToCompleted();
+        }
+        else if (selectedCompletedItems?.length > 0) {
+            transferItemsToPending()
+        }
+    }, [selectedPendingItems, selectedCompletedItems])
 
     return (
         <Box sx={{
@@ -97,12 +104,13 @@ const Home = () => {
             height: "auto",
             maxWidth: "1500px",
             display: "flex",
+            flexDirection: { md: "row", sm: "column", xs: "column" },
             justifyContent: "space-evenly",
             alignItems: "center",
-            marginTop: "100px"
+            margin: "50px 0 50px 0"
         }}>
             <LeftCard items={pendingItems} handleSelectedItems={handleSelectedItems} selectedPendingItems={selectedPendingItems} />
-            <Control transferToCompleted={transferItemsToCompleted} selectedPendingItems={selectedPendingItems} selectedCompletedItems={selectedCompletedItems} transferItemsToPending={transferItemsToPending} />
+
             <RightCard items={completedItems} selectedCompletedItems={selectedCompletedItems} handleCompletedSelectedItems={handleCompletedSelectedItems} />
 
         </Box>
