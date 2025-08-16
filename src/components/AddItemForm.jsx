@@ -1,16 +1,30 @@
 import React, { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 import { Box, TextField, Button, Paper } from "@mui/material";
 
-export default function AddItemForm({ onAdd }) {
-    const [name, setName] = useState("");
-    const [quantity, setQuantity] = useState(1);
+export default function AddItemForm({ setPendingItems }) {
+    const [item, setItem] = useState({
+        id: "",
+        name: "",
+        quantity: ""
+    });
 
     function handleSubmit(e) {
         e.preventDefault();
-        if (!name.trim()) return;
-        onAdd(name, quantity);
-        setName("");
-        setQuantity(1);
+
+        if (!item.name.trim() || !item.quantity.trim()) return;
+
+
+        const newItem = { ...item, id: uuidv4() };
+
+        setPendingItems((prev) => {
+            return [
+                ...prev,
+                newItem
+            ]
+        });
+
+        setItem({ id: "", name: "", quantity: "" });
     }
 
     return (
@@ -22,10 +36,12 @@ export default function AddItemForm({ onAdd }) {
                 borderRadius: "20px",
                 background: "linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)",
                 border: "1px solid rgba(226, 232, 240, 0.8)",
-                boxShadow: "0 10px 25px rgba(0, 0, 0, 0.08), 0 4px 10px rgba(0, 0, 0, 0.06)",
+                boxShadow:
+                    "0 10px 25px rgba(0, 0, 0, 0.08), 0 4px 10px rgba(0, 0, 0, 0.06)",
                 transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
                 "&:hover": {
-                    boxShadow: "0 20px 40px rgba(0, 0, 0, 0.12), 0 8px 16px rgba(0, 0, 0, 0.08)",
+                    boxShadow:
+                        "0 20px 40px rgba(0, 0, 0, 0.12), 0 8px 16px rgba(0, 0, 0, 0.08)",
                     transform: "translateY(-2px)"
                 }
             }}
@@ -43,8 +59,8 @@ export default function AddItemForm({ onAdd }) {
                 <TextField
                     label="Add new item"
                     variant="outlined"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
+                    value={item.name}
+                    onChange={(e) => setItem({ ...item, name: e.target.value })}
                     sx={{
                         flex: { xs: "1 1 100%", sm: 2 },
                         "& .MuiOutlinedInput-root": {
@@ -70,11 +86,9 @@ export default function AddItemForm({ onAdd }) {
                 />
                 <TextField
                     label="Quantity"
-                    type="number"
                     variant="outlined"
-                    inputProps={{ min: 1, max: 99 }}
-                    value={quantity}
-                    onChange={(e) => setQuantity(Number(e.target.value))}
+                    value={item.quantity}
+                    onChange={(e) => setItem({ ...item, quantity: e.target.value })}
                     sx={{
                         width: { xs: "100px", sm: "100px" },
                         "& .MuiOutlinedInput-root": {
@@ -101,7 +115,7 @@ export default function AddItemForm({ onAdd }) {
                 <Button
                     type="submit"
                     variant="contained"
-                    disabled={!name.trim()}
+                    disabled={!item.name.trim() || !item.quantity.trim()}
                     sx={{
                         px: 4,
                         py: 1.5,
@@ -109,11 +123,13 @@ export default function AddItemForm({ onAdd }) {
                         fontWeight: 600,
                         textTransform: "none",
                         fontSize: "0.95rem",
-                        background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                        background:
+                            "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
                         minWidth: "100px",
                         transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
                         "&:hover": {
-                            background: "linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%)",
+                            background:
+                                "linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%)",
                             transform: "translateY(-2px)",
                             boxShadow: "0 8px 25px rgba(102, 126, 234, 0.4)"
                         },

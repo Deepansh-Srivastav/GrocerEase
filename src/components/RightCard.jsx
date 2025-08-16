@@ -22,7 +22,7 @@ const RightCard = ({ items, handleCompletedSelectedItems, selectedCompletedItems
                                 return (
                                     <li
                                         key={item?.id || index}
-                                        className={`item ${isItemSelected ? 'item-selected' : ''}`}
+                                        className={`item-completed ${isItemSelected ? 'item-selected' : ''}`}
                                         onClick={() => handleCompletedSelectedItems(item)}
                                         role="button"
                                         tabIndex={0}

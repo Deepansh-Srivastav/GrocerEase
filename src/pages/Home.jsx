@@ -4,13 +4,11 @@ import { Box } from '@mui/material'
 import { useState, useEffect } from 'react';
 import Control from '../components/Control';
 
-const items = [
-    { id: 1, name: "Milk" },
-];
+
 
 const Home = () => {
 
-    const [pendingItems, setPendingItems] = useState(items);
+    const [pendingItems, setPendingItems] = useState([]);
     const [completedItems, setCompletedItems] = useState([]);
     const [selectedPendingItems, setSelectedPendingItems] = useState([]);
     const [selectedCompletedItems, setSelectedCompletedItems] = useState([]);
@@ -109,7 +107,11 @@ const Home = () => {
             alignItems: "center",
             margin: "50px 0 30px 0"
         }}>
-            <LeftCard items={pendingItems} handleSelectedItems={handleSelectedItems} selectedPendingItems={selectedPendingItems} />
+            <LeftCard 
+            items={pendingItems} 
+            setPendingItems={setPendingItems}
+            handleSelectedItems={handleSelectedItems} 
+            selectedPendingItems={selectedPendingItems} />
 
             <RightCard items={completedItems} selectedCompletedItems={selectedCompletedItems} handleCompletedSelectedItems={handleCompletedSelectedItems} />
 
