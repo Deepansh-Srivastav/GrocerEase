@@ -1,7 +1,7 @@
 import { Box, Button } from '@mui/material'
 import React from 'react'
 
-const Control = ({ selectedItems, transferToCompleted }) => {
+const Control = ({ selectedPendingItems, transferToCompleted }) => {
 
   return (
     <Box sx={{
@@ -14,7 +14,7 @@ const Control = ({ selectedItems, transferToCompleted }) => {
           fontSize: "26px",
           marginBottom: "20px"
         }}
-        disabled={selectedItems?.length > 0 ? false : true}
+        disabled={selectedPendingItems?.length > 0 ? false : true}
         onClick={transferToCompleted}
       >
         {"->"}
