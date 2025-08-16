@@ -16,34 +16,80 @@ const Home = () => {
 
     const [pendingItems, setPendingItems] = useState(items);
     const [completedItems, setCompletedItems] = useState([]);
-    const [selectedItems, setSelectedItems] = useState([]);
+    const [selectedPendingItems, setSelectedPendingItems] = useState([]);
+    const [selectedCompletedItems, setSelectedCompletedItems] = useState([]);
 
     function transferItemsToCompleted() {
 
-        const newCompleted = [...completedItems, ...selectedItems];
+        const newCompleted = [...completedItems, ...selectedPendingItems];
 
         const updatedPending = pendingItems.filter(
             (item) => newCompleted.every((completed) => completed.id !== item.id)
         );
 
-        // 3. Update state
         setCompletedItems(newCompleted);
         setPendingItems(updatedPending);
-        setSelectedItems([]);
+        setSelectedPendingItems([]);
     }
 
+    function transferItemsToPending() {
+        const selectedItems = [...selectedCompletedItems]
+
+        setPendingItems((prev) => {
+            return [...prev,
+            ...selectedItems
+            ]
+        });
+
+        const updatedCompletedList = completedItems?.filter((item) => {
+            return !(selectedCompletedItems?.some((selectedItem) => {
+                return selectedItem?.id === item?.id
+            }))
+        })
+
+        setCompletedItems([...updatedCompletedList]);
+
+        setSelectedCompletedItems([]);
+
+    };
+
+    function handleCompletedSelectedItems(product) {
+        const isProductPresent = selectedCompletedItems?.some((item) => {
+            return item?.id === product?.id;
+        });
+
+        if (!isProductPresent) {
+            setSelectedCompletedItems((prev) => {
+                return [
+                    ...prev,
+                    product
+                ];
+            });
+        }
+        else {
+            const newArray = selectedCompletedItems?.filter((item) => {
+                return item?.id !== product?.id;
+            });
+            setSelectedCompletedItems(() => {
+                return [
+                    ...newArray
+                ];
+            });
+
+        };
+    };
+
     function handleSelectedItems(product) {
-        const isDuplicateItem = selectedItems.some(item => item.id === product.id);
+        const isDuplicateItem = selectedPendingItems.some(item => item.id === product.id);
 
         if (isDuplicateItem) {
-            setSelectedItems(prev => prev.filter(item => item.id !== product.id));
+            setSelectedPendingItems(prev => prev.filter(item => item.id !== product.id));
         } else {
-            setSelectedItems(prev => [...prev, product]);
+            setSelectedPendingItems(prev => [...prev, product]);
         }
     }
 
-    console.log("Completed items are - ", completedItems);
-
+    console.log(" items are - ", selectedCompletedItems);
 
     return (
         <Box sx={{
@@ -55,9 +101,9 @@ const Home = () => {
             alignItems: "center",
             marginTop: "100px"
         }}>
-            <LeftCard items={pendingItems} handleSelectedItems={handleSelectedItems} selectedItems={selectedItems} />
-            <Control transferToCompleted={transferItemsToCompleted} selectedItems={selectedItems} />
-            <RightCard items={completedItems} />
+            <LeftCard items={pendingItems} handleSelectedItems={handleSelectedItems} selectedPendingItems={selectedPendingItems} />
+            <Control transferToCompleted={transferItemsToCompleted} selectedPendingItems={selectedPendingItems} selectedCompletedItems={selectedCompletedItems} transferItemsToPending={transferItemsToPending} />
+            <RightCard items={completedItems} selectedCompletedItems={selectedCompletedItems} handleCompletedSelectedItems={handleCompletedSelectedItems} />
 
         </Box>
     );
